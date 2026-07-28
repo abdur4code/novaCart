@@ -5,7 +5,7 @@ import RegisterForm from '../features/auth/RegisterForm'
 const RegisterPage = () => {
   return (
     <div className="w-full lg:w-1/2 lg:max-w-md">
-      <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-8 shadow-2xl backdrop-blur-xl sm:p-10">
+      <div className="rounded-2xl border border-white/10 bg-white/3 p-8 shadow-2xl backdrop-blur-xl sm:p-10">
         <div className="mb-8">
           <h2 className="text-3xl font-semibold tracking-tight text-white">
             Create an account

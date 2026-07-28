@@ -1,12 +1,43 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { login, clearError } from "./authSlice";
 
 const LoginForm = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {errors},
+  } = useForm({
+    defaultValues:{
+      email: "",
+      password: "",
+    }
+  })
+
+  const dispatch = useDispatch();
+  const authError = useSelector((state) => state.auth.error);
+
+  const onSubmit = (data) => {
+    dispatch(clearError());
+    dispatch(login({
+      email: data.email,
+      password: data.password,
+    }))
+    console.log(data);
+    reset();
+  }
+
   return (
-    <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" >
       {/* Email Input */}
       <div className="space-y-2">
         <input
+        {...register('email', {
+          required: 'Email is required',
+        })}
           id="email"
           type="email"
           placeholder="Email Address"
@@ -19,6 +50,9 @@ const LoginForm = () => {
       <div className="space-y-2">
         <div className="flex items-center justify-between"></div>
         <input
+        {...register('password', {
+          required: 'Password is required',
+        })}
           id="password"
           type="password"
           placeholder="Password"

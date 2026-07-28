@@ -1,13 +1,46 @@
 import React from "react";
 import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, clearError } from "./authSlice";
 
 const RegisterForm = () => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const dispatch = useDispatch();
+  const authError = useSelector((state) => state.auth.error);
+
+  const onSubmit = (data) => {
+    dispatch(clearError());
+    dispatch(
+      registerUser({
+        fullName: data.fullName,
+        email: data.email,
+        password: data.password,
+      }),
+    );
+    reset();
+  };
   return (
-    <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
       {/* Full Name Input */}
       <div className="space-y-2">
         <input
+          {...register("fullName", {
+            required: "Full Name is required",
+          })}
           id="fullName"
           type="text"
           placeholder="Full Name"
@@ -19,6 +52,9 @@ const RegisterForm = () => {
       {/* Email Input */}
       <div className="space-y-2">
         <input
+          {...register("email", {
+            required: "Email is required",
+          })}
           id="email"
           type="email"
           placeholder="Email Address"
@@ -30,6 +66,10 @@ const RegisterForm = () => {
       {/* Password Input */}
       <div className="space-y-2">
         <input
+          {...register("password", {
+            required: "Password is required",
+            minLength: { value: 6, message: "Minimum 6 characters" },
+          })}
           id="password"
           type="password"
           placeholder="Password"
