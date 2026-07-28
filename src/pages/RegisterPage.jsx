@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router'
 import RegisterForm from '../features/auth/RegisterForm'
 
 const RegisterPage = () => {
@@ -14,7 +15,7 @@ const RegisterPage = () => {
           </p>
         </div>
 
-        
+        <RegisterForm />
 
         {/* Log In Link */}
         <p className="mt-8 text-center text-sm text-slate-400">
