@@ -12,8 +12,8 @@ const AuthLayout = () => {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 font-sans text-slate-300">
       {/* Ambient Background Gradients (Positioned to highlight the glass effect) */}
-      <div className="absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-indigo-600/20 blur-[120px]"></div>
-      <div className="absolute bottom-0 right-1/4 h-[400px] w-[400px] rounded-full bg-blue-500/20 blur-[100px]"></div>
+      <div className="absolute left-1/4 top-0 h-125 w-125 rounded-full bg-indigo-600/20 blur-[120px]"></div>
+      <div className="absolute bottom-0 right-1/4 h-100 w-100 rounded-full bg-blue-500/20 blur-[100px]"></div>
 
       {/* Main Layout Container */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-16 px-6 py-12 lg:flex-row lg:px-12">
