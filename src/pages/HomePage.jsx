@@ -22,6 +22,8 @@ import {
   Package,
   Layers,
 } from "lucide-react";
+import { useSelector } from "react-redux";
+import { cartCount } from "../utils/cartUtils";
 
 // MOCK DATA: Categories
 const CATEGORIES = [
@@ -113,6 +115,8 @@ const NEW_ARRIVALS = [
 ];
 
 const HomePage = () => {
+  const {items} = useSelector((state) => state.cart);
+  const cartTotal = cartCount(items);
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 font-sans text-slate-300">
       {/* ========================================================= */}
@@ -132,68 +136,6 @@ const HomePage = () => {
       <div className="pointer-events-none absolute bottom-10 right-1/4 h-125 w-125 rounded-full bg-blue-600/20 blur-[120px]" />
 
       {/* ========================================================= */}
-
-      {/* 1. TOP NAVBAR */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
-          {/* Brand Logo */}
-          <a
-            href="#"
-            className="flex items-center gap-2.5 text-xl font-bold text-white"
-          >
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 shadow-lg shadow-indigo-600/20">
-              <ShoppingBag size={20} className="text-white" />
-            </div>
-            Novacart
-          </a>
-
-          {/* Navigation Links */}
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-300 md:flex">
-            <a
-              href="#"
-              className="text-white transition-colors hover:text-indigo-400"
-            >
-              Home
-            </a>
-            <a href="#" className="transition-colors hover:text-indigo-400">
-              Shop
-            </a>
-            <a href="#" className="transition-colors hover:text-indigo-400">
-              About
-            </a>
-          </nav>
-
-          {/* Right Action Icons (Cart, Profile, Login) */}
-          <div className="flex items-center gap-3">
-            {/* Search Trigger */}
-            <button className="rounded-lg border border-white/10 bg-white/5 p-2.5 text-slate-300 transition-colors hover:border-white/20 hover:text-white">
-              <Search size={18} />
-            </button>
-
-            {/* Cart Icon with Badge */}
-            <button className="relative rounded-lg border border-white/10 bg-white/5 p-2.5 text-slate-300 transition-colors hover:border-white/20 hover:text-white">
-              <ShoppingCart size={18} />
-              <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
-                3
-              </span>
-            </button>
-
-            {/* Profile Icon */}
-            <button className="rounded-lg border border-white/10 bg-white/5 p-2.5 text-slate-300 transition-colors hover:border-white/20 hover:text-white">
-              <User size={18} />
-            </button>
-
-            {/* Login Icon / Button */}
-            <a
-              href="#"
-              className="flex items-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-600/20 px-3.5 py-2 text-sm font-medium text-indigo-300 transition-all hover:bg-indigo-600 hover:text-white"
-            >
-              <LogIn size={16} />
-              <span className="hidden sm:inline">Login</span>
-            </a>
-          </div>
-        </div>
-      </header>
 
       {/* MAIN CONTENT */}
       <main className="relative z-10 mx-auto max-w-7xl px-6 py-12 lg:px-12">
@@ -244,7 +186,7 @@ const HomePage = () => {
               <ShoppingCart size={24} />
             </div>
             <div>
-              <div className="text-2xl font-bold text-white">3 Items</div>
+              <div className="text-2xl font-bold text-white">{cartTotal} Items</div>
               <div className="text-sm text-slate-400">
                 Currently in Your Cart
               </div>
