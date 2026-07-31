@@ -5,7 +5,7 @@ import { addProduct } from "../features/products/productSlice";
 const getProduct = async () => {
     const dispatch = useDispatch();
     try {
-        let res = await api.get('/products?limit=0');
+        let res = await api.get('/products');
         dispatch(addProduct(res.data.products))
     } catch (error) {
         console.log("Error in API: ", error);
