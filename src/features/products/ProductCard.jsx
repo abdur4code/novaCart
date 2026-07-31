@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { ShoppingCart, Heart, Star, Eye, Check, Tag } from "lucide-react";
+import { useNavigate } from "react-router";
+import { getOriginalPrice, getReviewCount } from "../../utils/productUtils";
 
 const ProductCard = ({
   // Direct API Props Destructured with Fallbacks
@@ -20,16 +22,13 @@ const ProductCard = ({
   onToggleWishlist,
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const navigate = useNavigate();
 
   // Calculate review count
-  const reviewCount =
-    reviews.length > 3 ? reviews.length : ((id * 37) % 280) + 45;
+  const reviewCount = getReviewCount(reviews.length, id);
 
   // Calculate the original pre-discount price (e.g., $11.16 if price is $9.99 with 10.48% off)
-  const originalPrice =
-    discountPercentage > 0
-      ? (price / (1 - discountPercentage / 100)).toFixed(2)
-      : null;
+  const originalPrice = getOriginalPrice(discountPercentage, price)
 
   // Handlers
   const handleWishlist = (e) => {
@@ -82,7 +81,10 @@ const ProductCard = ({
 
         {/* QUICK VIEW OVERLAY ON HOVER */}
         <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-          <button className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-slate-950/85 px-3.5 py-1.5 text-xs font-medium text-slate-200 shadow-lg backdrop-blur-md transition-colors hover:bg-slate-900 hover:text-white">
+          <button
+            onClick={() => navigate(`/main/product/${id}`)}
+            className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-slate-950/85 px-3.5 py-1.5 text-xs font-medium text-slate-200 shadow-lg backdrop-blur-md transition-colors hover:bg-slate-900 hover:text-white"
+          >
             <Eye size={13} /> Quick View
           </button>
         </div>

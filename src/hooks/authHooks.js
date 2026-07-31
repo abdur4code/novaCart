@@ -60,7 +60,6 @@ export const useAuth = () => {
     dispatch(addUser(userFound));
     localStorage.setItem('loggedInUser', JSON.stringify(userFound));
     const cartData = getCart(userFound.email);
-    console.log(cartData);
     dispatch(setCart(cartData))
     toast.success('User loged in')
     reset();

@@ -13,7 +13,8 @@ import PublicProtected from "./protected/PublicProtected";
 import MainProtected from "./protected/MainProtected";
 import AboutPage from "../pages/AboutPage";
 import getProduct from "../api/productApi";
-
+import ProductLayout from "../layouts/ProductLayout";
+import ProductDetailsPage from "../pages/ProductDetailsPage";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -67,12 +68,22 @@ const AppRoutes = () => {
             },
             {
               path: "product",
-              element: <ProductPage />,
+              element: <ProductLayout />,
+              children: [
+                {
+                  path: "",
+                  element: <ProductPage />,
+                },
+                {
+                  path: ":id",
+                  element: <ProductDetailsPage />,
+                },
+              ],
             },
             {
               path: "about",
-              element: <AboutPage />
-            }
+              element: <AboutPage />,
+            },
           ],
         },
       ],
