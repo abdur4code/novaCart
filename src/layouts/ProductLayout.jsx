@@ -1,8 +1,13 @@
 import React from "react";
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 
 const ProductLayout = () => {
-  return <Outlet />;
+  return (
+    <>
+      <ScrollRestoration />
+      <Outlet />
+    </>
+  );
 };
 
 export default ProductLayout;

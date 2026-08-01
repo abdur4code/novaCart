@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router";
+import { Outlet, ScrollRestoration } from "react-router";
 import Navbar from "../components/dashboard/Navbar";
 
 import {
@@ -22,6 +22,7 @@ const MainLayout = () => {
   return (
     <div className="bg-slate-950 font-sans text-slate-300">
       <Navbar />
+      <ScrollRestoration />
       <Outlet />
       <CartDrawer
         isOpen={isCartOpen}

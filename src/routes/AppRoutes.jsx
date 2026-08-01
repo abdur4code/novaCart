@@ -18,20 +18,17 @@ import ProductDetailsPage from "../pages/ProductDetailsPage";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
-  const hydrateUser = () => {
-    let user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-    if (!user) {
-      return;
-    }
-    dispatch(addUser(user));
-  };
-
   useEffect(() => {
-    hydrateUser();
-  }, []);
+    const hydrateUser = () => {
+      const user = JSON.parse(localStorage.getItem("loggedInUser"));
+      if (user) {
+        dispatch(addUser(user));
+      }
+    };
 
-  getProduct();
+    hydrateUser();
+    getProduct(dispatch);
+  }, [dispatch]);
 
   let router = createBrowserRouter([
     {
@@ -91,6 +88,7 @@ const AppRoutes = () => {
   ]);
 
   return <RouterProvider router={router} />;
+
 };
 
 export default AppRoutes;

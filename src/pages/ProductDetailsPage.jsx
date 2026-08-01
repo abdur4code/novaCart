@@ -20,14 +20,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getOriginalPrice, getReviewCount } from "../utils/productUtils";
 import { addToCart } from "../features/cart/cartSlice";
 import ProductCard from "../features/products/ProductCard";
+import { Link } from "react-router";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const items = useSelector((state) => state.products.productList);
-  const product = useSelector((state) =>
-    state.products.productList.find((p) => p.id === Number(id)),
-  );
+  const product = items.find((p) => p.id === Number(id));
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -49,8 +48,6 @@ const ProductDetailsPage = () => {
     (prod) => prod.category === product.category,
   );
 
-  console.log(relatedProduct);
-
   return (
     <div className="relative min-h-screen bg-slate-950 px-6 py-12 font-sans text-slate-300 lg:px-12">
       {/* ========================================================= */}
@@ -64,12 +61,12 @@ const ProductDetailsPage = () => {
         {/* 1. TOP NAVIGATION & BREADCRUMBS */}
         {/* ========================================================= */}
         <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
-          <a
-            href="#"
+          <Link
+            to={'/main/product'}
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition-colors hover:text-white"
           >
             <ArrowLeft size={16} /> Back to Catalog
-          </a>
+          </Link>
 
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <span>Catalog</span>
