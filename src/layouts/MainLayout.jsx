@@ -11,6 +11,7 @@ import {
 } from "../features/cart/cartSlice";
 import CartDrawer from "../components/dashboard/CartDrawer";
 import { useDispatch, useSelector } from "react-redux";
+import Footer from "../components/dashboard/Footer";
 
 const MainLayout = () => {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const MainLayout = () => {
         onRemoveItem={(id) => dispatch(removeFromCart(id))}
         onClearCart={() => dispatch(clearCart())}
       />
+      <Footer />
     </div>
   );
 };

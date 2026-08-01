@@ -16,7 +16,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.authChecked = true;
         },
-        removeUser: (state, action) => {
+        removeUser: (state, action) => { //Logout functionality
             state.logedUserData = null;
             state.isAuthenticated = false;
             state.authChecked = true;

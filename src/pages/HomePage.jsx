@@ -22,14 +22,17 @@ import {
   Package,
   Layers,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { cartCount } from "../utils/cartUtils";
 import ShopByCategory from "../components/dashboard/ShopByCategory";
 import TopRatedProducts from "../components/dashboard/TopRatedProducts";
 import NewArrivalProducts from "../components/dashboard/NewArrivalProducts";
+import { Link } from "react-router";
+import { toggleCart } from "../features/cart/cartSlice";
 
 const HomePage = () => {
   const { items } = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
   const cartTotal = cartCount(items);
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 font-sans text-slate-300">
@@ -57,7 +60,7 @@ const HomePage = () => {
         <section className="relative my-8 overflow-hidden rounded-2xl border border-white/10 bg-white/3 p-8 shadow-2xl backdrop-blur-xl md:p-14 lg:p-16">
           <div className="max-w-2xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
-              <Sparkles size={14} /> Welcome back to your Novacart workspace
+              <Sparkles size={14} /> Welcome back to your Novacart
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
               Next-gen shopping,{" "}
@@ -70,11 +73,17 @@ const HomePage = () => {
 
             {/* CTAs */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <button className="flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500">
+              <Link
+                to={"/main/product"}
+                className="flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-500"
+              >
                 Explore Catalog
                 <ArrowRight size={18} />
-              </button>
-              <button className="rounded-lg border border-white/10 bg-white/5 px-6 py-3 font-semibold text-slate-300 transition-all hover:bg-white/10 hover:text-white">
+              </Link>
+              <button
+                onClick={() => dispatch(toggleCart())}
+                className="cursor-pointer rounded-lg border border-white/10 bg-white/5 px-6 py-3 font-semibold text-slate-300 transition-all hover:bg-white/10 hover:text-white"
+              >
                 View Orders
               </button>
             </div>
@@ -179,37 +188,6 @@ const HomePage = () => {
           </div>
         </section>
       </main>
-
-      {/* 8. FOOTER */}
-      <footer className="relative z-10 border-t border-white/10 bg-slate-950/80 backdrop-blur-xl">
-        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-12">
-          <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
-            <div className="flex items-center gap-2 text-lg font-bold text-white">
-              <div className="flex h-7 w-7 items-center justify-center rounded bg-indigo-600">
-                <ShoppingBag size={16} className="text-white" />
-              </div>
-              Novacart
-            </div>
-
-            <p className="text-sm text-slate-500">
-              &copy; {new Date().getFullYear()} Novacart Infrastructure, Inc.
-              All rights reserved.
-            </p>
-
-            <div className="flex gap-6 text-sm text-slate-400">
-              <a href="#" className="hover:text-white">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-white">
-                Terms of Service
-              </a>
-              <a href="#" className="hover:text-white">
-                Support
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

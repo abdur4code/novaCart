@@ -12,6 +12,7 @@ import {
 import ProductList from "../features/products/ProductList";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router";
+import ProductPageSkeleton from "../components/skeleton/ProductPageSkeleton";
 
 const SORT_OPTIONS = [
   { label: "Featured", value: "featured" },
@@ -117,11 +118,7 @@ const ProductPage = () => {
   };
 
   if (status === "idle" || status === "loading") {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">
-        Loading products...
-      </div>
-    );
+    return <ProductPageSkeleton />
   }
 
   if (status === "failed") {

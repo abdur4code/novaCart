@@ -42,7 +42,7 @@ const Navbar = () => {
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 shadow-lg shadow-indigo-600/20">
             <ShoppingBag size={20} className="text-white" />
           </div>
-          Novacart
+          NovaCart
         </a>
 
         {/* Navigation Links */}

@@ -7,7 +7,7 @@ import AuthLayout from "../layouts/AuthLayout";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import { useDispatch } from "react-redux";
-import { addUser } from "../features/auth/authSlice";
+import { addUser, removeUser } from "../features/auth/authSlice";
 import { toast } from "react-toastify";
 import PublicProtected from "./protected/PublicProtected";
 import MainProtected from "./protected/MainProtected";
@@ -27,6 +27,8 @@ const AppRoutes = () => {
         const cartData = getCart(user.email);
         dispatch(addUser(user));
         dispatch(setCart(cartData));
+      }else{
+        dispatch(removeUser())
       }
     };
     hydrateUser();
