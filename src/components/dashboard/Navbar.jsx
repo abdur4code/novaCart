@@ -1,22 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { ShoppingBag, ShoppingCart, User, LogIn, Search } from "lucide-react";
 import { NavLink } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleCart } from "../../features/cart/cartSlice";
 import { cartCount } from "../../utils/cartUtils";
+import { removeUser } from "../../features/auth/authSlice";
+import ConfirmModal from "../ConfirmModal";
+import { clearCart } from "../../features/cart/cartSlice";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  let { items: cart, isCartOpen
-   } = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.auth.logedUserData);
+  let { items: cart, isCartOpen } = useSelector((state) => state.cart);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-   const cartTotal = cartCount(cart);
+  const cartTotal = cartCount(cart);
 
   const getLinkClass = ({ isActive }) => {
     return `transition-colors hover:text-indigo-400 ${
       isActive ? "text-indigo-500" : "text-gray-300 hover:text-indigo-600"
     }`;
   };
+
+  const handleLogoutConfirmed = () => {
+    dispatch(removeUser());
+    dispatch(clearCart());
+    localStorage.removeItem("loggedInUser");
+    setShowLogoutConfirm(false);
+    toast.success("Logged out successfully");
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
@@ -49,7 +63,7 @@ const Navbar = () => {
           {/* Profile Icon */}
           <button className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 p-2.5 text-slate-300 transition-colors hover:border-white/20 hover:text-white">
             <User size={18} />
-            <span>Abdur</span>
+            <span>{user.fullName}</span>
           </button>
           {/* Cart Icon with Badge */}
           <button
@@ -63,9 +77,23 @@ const Navbar = () => {
           </button>
 
           {/* Logout Icon / Button */}
-          <button className="rounded-lg border border-indigo-500/30 bg-indigo-600/20 p-2.5 text-sm font-medium text-indigo-300 transition-all hover:bg-indigo-600 hover:text-white">
-            <LogIn size={16} />
-          </button>
+          <>
+            <button
+              onClick={() => setShowLogoutConfirm(true)}
+              className="rounded-lg border border-indigo-500/30 bg-indigo-600/20 p-2.5 text-sm font-medium text-indigo-300 transition-all hover:bg-indigo-600 hover:text-white"
+            >
+              <LogIn size={16} />
+            </button>
+            <ConfirmModal
+              isOpen={showLogoutConfirm}
+              title="Log out?"
+              message="You'll need to sign in again to access your cart and orders."
+              confirmLabel="Log out"
+              cancelLabel="Cancel"
+              onConfirm={handleLogoutConfirmed}
+              onCancel={() => setShowLogoutConfirm(false)}
+            />
+          </>
         </div>
       </div>
     </header>

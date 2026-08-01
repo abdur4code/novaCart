@@ -36,13 +36,14 @@ const ProductCard = ({
   const originalPrice = getOriginalPrice(discountPercentage, price);
 
   const handleAddToCart = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     dispatch(addToCart(product));
   };
 
   // Handlers
   const handleWishlist = (e) => {
+    e.preventDefault();
     e.stopPropagation();
     setIsWishlisted(!isWishlisted);
     if (onToggleWishlist) {
@@ -95,7 +96,7 @@ const ProductCard = ({
           <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <button
               onClick={() => navigate(`/main/product/${id}`)}
-              className="flex items-center gap-1.5 rounded-lg border border-white/15 bg-slate-950/85 px-3.5 py-1.5 text-xs font-medium text-slate-200 shadow-lg backdrop-blur-md transition-colors hover:bg-slate-900 hover:text-white"
+              className="cursor-pointer flex items-center gap-1.5 rounded-lg border border-white/15 bg-slate-950/85 px-3.5 py-1.5 text-xs font-medium text-slate-200 shadow-lg backdrop-blur-md transition-colors hover:bg-slate-900 hover:text-white"
             >
               <Eye size={13} /> Quick View
             </button>

@@ -214,49 +214,4 @@ const HomePage = () => {
   );
 };
 
-// REUSABLE PRODUCT CARD COMPONENT
-function ProductCard({ product }) {
-  return (
-    <div className="group flex flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-white/3 shadow-lg backdrop-blur-md transition-all hover:border-white/20 hover:bg-white/6">
-      {/* Product Image Placeholder (SaaS style dark card box) */}
-      <div className="relative flex h-48 w-full items-center justify-center bg-linear-to-br from-slate-900 to-slate-950">
-        <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-400">
-          {product.category}
-        </span>
-
-        {/* Top Badge */}
-        <span className="absolute left-3 top-3 rounded-md bg-indigo-600/80 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
-          {product.tag}
-        </span>
-
-        {/* Wishlist Button */}
-        <button className="absolute right-3 top-3 rounded-lg border border-white/10 bg-black/40 p-2 text-slate-400 transition-colors hover:text-white">
-          <Heart size={16} />
-        </button>
-      </div>
-
-      {/* Content */}
-      <div className="flex flex-1 flex-col justify-between p-5">
-        <div>
-          <div className="flex items-center gap-1 text-xs text-amber-400">
-            <Star size={14} className="fill-amber-400" />
-            <span className="font-semibold text-white">{product.rating}</span>
-            <span className="text-slate-500">({product.reviews})</span>
-          </div>
-          <h3 className="mt-2 font-medium text-white transition-colors group-hover:text-indigo-400">
-            {product.name}
-          </h3>
-        </div>
-
-        <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
-          <span className="text-lg font-bold text-white">{product.price}</span>
-          <button className="flex items-center gap-1.5 rounded-lg bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-indigo-600">
-            <ShoppingCart size={14} /> Add
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default HomePage;

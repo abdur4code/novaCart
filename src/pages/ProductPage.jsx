@@ -18,17 +18,19 @@ const SORT_OPTIONS = [
   { label: "Price: Low → High", value: "price-asc" },
   { label: "Price: High → Low", value: "price-desc" },
   { label: "Highest Rated", value: "rating-desc" },
+  { label: "New Arrivals", value: "new-desc" },
 ];
 
 const ProductPage = () => {
   // Filter & Search State
   const productsData = useSelector((state) => state.products.productList);
+  const status = useSelector((state) => state.products.status);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortBy, setSortBy] = useState("featured");
 
   const selectedCategory = searchParams.get("category") || "all";
+  const selectedSort = searchParams.get("filter") || "featured";
 
   const setSelectedCategory = (value) => {
     if (value === "all") {
@@ -47,15 +49,35 @@ const ProductPage = () => {
     }
   };
 
-  const CATEGORIES = [
-    { label: "All Categories", value: "all" },
-    ...[...new Set(productsData.map((product) => product.category))].map(
-      (category) => ({
-        label: category.charAt(0).toUpperCase() + category.slice(1),
-        value: category,
-      }),
-    ),
-  ];
+  const setSelectedFilter = (value) => {
+    if (value === "featured") {
+      // remove the param entirely so URL stays clean: /shop
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("filter");
+        return next;
+      });
+    } else {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("filter", value);
+        return next;
+      });
+    }
+  };
+
+  const CATEGORIES = useMemo(
+    () => [
+      { label: "All Categories", value: "all" },
+      ...[...new Set(productsData.map((product) => product.category))].map(
+        (category) => ({
+          label: category.charAt(0).toUpperCase() + category.slice(1),
+          value: category,
+        }),
+      ),
+    ],
+    [productsData],
+  );
 
   // Filter and Sort Logic
   const filteredProducts = useMemo(() => {
@@ -74,26 +96,41 @@ const ProductPage = () => {
         return matchesSearch && matchesCategory;
       })
       .sort((a, b) => {
-        if (sortBy === "price-asc") return a.price - b.price;
-        if (sortBy === "price-desc") return b.price - a.price;
-        if (sortBy === "rating-desc") return b.rating - a.rating;
+        if (selectedSort === "price-asc") return a.price - b.price;
+        if (selectedSort === "price-desc") return b.price - a.price;
+        if (selectedSort === "rating-desc") return b.rating - a.rating;
+        if (selectedSort === "new-desc") return b.id - a.id;
         return 0; // "featured" default order
       });
-  }, [searchQuery, selectedCategory, sortBy]);
+  }, [searchQuery, selectedCategory, selectedSort, productsData]);
 
   // Check if any filter is currently active
   const hasActiveFilters =
     searchQuery.trim() !== "" ||
     selectedCategory !== "all" ||
-    sortBy !== "featured";
+    selectedSort !== "featured";
 
   // Reset all filters
   const handleClearAll = () => {
     setSearchQuery("");
-    setSelectedCategory("all");
-    setSortBy("featured");
+    setSearchParams(new URLSearchParams());
   };
 
+  if (status === "idle" || status === "loading") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-400">
+        Loading products...
+      </div>
+    );
+  }
+
+  if (status === "failed") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-rose-400">
+        Couldn't load products. Please try refreshing.
+      </div>
+    );
+  }
   return (
     <div className="relative min-h-screen bg-slate-950 px-6 py-12 font-sans text-slate-300 lg:px-12">
       {/* ========================================================= */}
@@ -194,10 +231,10 @@ const ProductPage = () => {
               {/* Price / Sort Dropdown */}
               <div className="relative">
                 <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                  value={selectedSort}
+                  onChange={(e) => setSelectedFilter(e.target.value)}
                   className={`appearance-none rounded-xl border bg-black/30 py-3 pl-4 pr-10 text-sm font-medium outline-none transition-all ${
-                    sortBy !== "featured"
+                    selectedSort !== "featured"
                       ? "border-indigo-500/60 bg-indigo-500/10 text-white"
                       : "border-white/10 text-slate-300 hover:border-white/20"
                   }`}
@@ -222,7 +259,7 @@ const ProductPage = () => {
               {hasActiveFilters && (
                 <button
                   onClick={handleClearAll}
-                  className="flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-300 transition-colors hover:bg-rose-500/20 hover:text-white"
+                  className="cursor-pointer flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-300 transition-colors hover:bg-rose-500/20 hover:text-white"
                 >
                   <X size={16} />
                   Clear
@@ -246,7 +283,7 @@ const ProductPage = () => {
                   Search: "{searchQuery}"
                   <button
                     onClick={() => setSearchQuery("")}
-                    className="hover:text-white"
+                    className="cursor-pointer hover:text-white"
                   >
                     <X size={13} />
                   </button>
@@ -259,7 +296,7 @@ const ProductPage = () => {
                   Category: {selectedCategory}
                   <button
                     onClick={() => setSelectedCategory("all")}
-                    className="hover:text-white"
+                    className="cursor-pointer hover:text-white"
                   >
                     <X size={13} />
                   </button>
@@ -267,13 +304,16 @@ const ProductPage = () => {
               )}
 
               {/* Sort Chip */}
-              {sortBy !== "featured" && (
+              {selectedSort !== "featured" && (
                 <span className="inline-flex items-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-600/20 px-3 py-1 text-xs font-medium text-indigo-300">
                   Sorted:{" "}
-                  {SORT_OPTIONS.find((opt) => opt.value === sortBy)?.label}
+                  {
+                    SORT_OPTIONS.find((opt) => opt.value === selectedSort)
+                      ?.label
+                  }
                   <button
-                    onClick={() => setSortBy("featured")}
-                    className="hover:text-white"
+                    onClick={() => setSelectedFilter("featured")}
+                    className="cursor-pointer hover:text-white"
                   >
                     <X size={13} />
                   </button>

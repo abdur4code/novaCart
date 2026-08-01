@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ShoppingCart,
   Heart,
@@ -26,18 +26,37 @@ const ProductDetailsPage = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const items = useSelector((state) => state.products.productList);
-  const product = items.find((p) => p.id === Number(id));
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
-  const [isWishlisted, setIsWishlisted] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const reviewCount = getReviewCount(product.reviews.length, product.id);
-  const originalPrice = getOriginalPrice(
-    product.discountPercentage,
-    product.price,
-  );
   const cart = useSelector((state) => state.cart.items);
 
-  if (!product) return <div>Product not found</div>;
+  const product = items.find((p) => p.id === Number(id));
+
+  // Fully-chained optional access
+  const defaultImg = product?.images?.[0];
+  const [selectedImage, setSelectedImage] = useState(defaultImg);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
+  const reviewCount = getReviewCount(product?.reviews?.length, product?.id);
+  const originalPrice = getOriginalPrice(
+    product?.discountPercentage,
+    product?.price,
+  );
+
+  // useEffect must run unconditionally
+  useEffect(() => {
+    if (product?.images) {
+      setSelectedImage(product.images[0]);
+    }
+  }, [product, id]);
+
+  // Guard AFTER all hooks are declared
+  if (!product) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-slate-400">
+        Loading product...
+      </div>
+    );
+  }
 
   const handleAddToCart = () => {
     dispatch(addToCart(product));
@@ -49,7 +68,10 @@ const ProductDetailsPage = () => {
   );
 
   return (
-    <div className="relative min-h-screen bg-slate-950 px-6 py-12 font-sans text-slate-300 lg:px-12">
+    <div
+      key={id}
+      className="relative min-h-screen bg-slate-950 px-6 py-12 font-sans text-slate-300 lg:px-12"
+    >
       {/* ========================================================= */}
       {/* AMBIENT BACKGROUND GLOW GRADIENTS */}
       {/* ========================================================= */}
@@ -62,7 +84,7 @@ const ProductDetailsPage = () => {
         {/* ========================================================= */}
         <div className="mb-8 flex items-center justify-between border-b border-white/10 pb-4">
           <Link
-            to={'/main/product'}
+            to={"/main/product"}
             className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 transition-colors hover:text-white"
           >
             <ArrowLeft size={16} /> Back to Catalog
@@ -132,7 +154,7 @@ const ProductDetailsPage = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: PRODUCT SPECIFICATIONS & ACTIONS (5 columns) */}
+          {/* RIGHT COLUMN: PRODUCT SPECIFICATIONS & ACTIONS */}
           <div className="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/3 p-8 shadow-2xl backdrop-blur-xl lg:col-span-5">
             <div>
               {/* Brand & Stock Status */}
@@ -203,32 +225,9 @@ const ProductDetailsPage = () => {
               </div>
             </div>
 
-            {/* ACTION FOOTER: QUANTITY & CART CTAS */}
+            {/* ACTION FOOTER: QUANTITY & CART CTA */}
             <div className="mt-8 border-t border-white/10 pt-6">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                {/* Quantity Controller */}
-                <div className="flex items-center justify-between rounded-xl border border-white/10 bg-black/30 p-1.5 sm:w-36">
-                  <button
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={quantity <= 1}
-                    className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-40"
-                  >
-                    <Minus size={16} />
-                  </button>
-                  <span className="text-sm font-bold text-white">
-                    {quantity}
-                  </span>
-                  <button
-                    onClick={() =>
-                      setQuantity((q) => Math.min(product.stock, q + 1))
-                    }
-                    disabled={quantity >= product.stock}
-                    className="rounded-lg p-2 text-slate-400 transition-colors hover:bg-white/10 hover:text-white disabled:opacity-40"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
-
                 {/* Add to Cart CTA */}
                 <button
                   onClick={handleAddToCart}
@@ -309,9 +308,9 @@ const ProductDetailsPage = () => {
               <ProductCard
                 key={item.id}
                 {...item}
-                isInCart={cart.some((cartItem) => cartItem.id === item.id)}
-                onAddToCart={(item) => dispatch(addToCart(item))}
-                onToggleWishlist={(item) => console.log("Wishlisted:", item)}
+                isInCart={cart.some((cartItem) => cartItem.id === product.id)}
+                product={product}
+                onToggleWishlist={(prod) => console.log("Wishlisted:", prod)}
               />
             ))}
           </div>

@@ -3,6 +3,7 @@ import { TrendingUp } from "lucide-react";
 import { useSelector } from "react-redux";
 import ProductCard from "../../features/products/ProductCard";
 import {addToCart} from "../../features/cart/cartSlice"
+import { Link } from "react-router";
 
 const TopRatedProducts = () => {
   const productList = useSelector((state) => state.products.productList);
@@ -20,12 +21,12 @@ const TopRatedProducts = () => {
             Top-Rated Products
           </h2>
         </div>
-        <a
-          href="#"
+        <Link
+          to={`/main/product?filter=rating-desc`}
           className="text-sm font-semibold text-indigo-400 hover:text-indigo-300"
         >
           Browse top rated →
-        </a>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

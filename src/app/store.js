@@ -16,7 +16,9 @@ store.subscribe(() => {
     const state = store.getState();
 
     const email = state.auth. logedUserData?.email;
-    const items = state.cart.items;
+    const {items, isLoaded} = state.cart;
+
+    if(!email || !isLoaded) return;
 
     saveCart(email, items);
 });

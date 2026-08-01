@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { addUser } from "../features/auth/authSlice";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { setCart } from "../features/cart/cartSlice";
 import { getCart } from "../utils/cartUtils";
+import { setCart } from "../features/cart/cartSlice";
 
 export const useAuth = () => {
   const [usersData, setUsersData] = useState(
@@ -57,11 +57,11 @@ export const useAuth = () => {
       reset();
       return;
     }
+    const cartData = getCart(userFound.email);
     dispatch(addUser(userFound));
     localStorage.setItem('loggedInUser', JSON.stringify(userFound));
-    const cartData = getCart(userFound.email);
-    dispatch(setCart(cartData))
-    toast.success('User loged in')
+    dispatch(setCart(cartData));
+    toast.success('User loged in');
     reset();
   };
 

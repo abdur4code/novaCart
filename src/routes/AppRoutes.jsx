@@ -15,6 +15,8 @@ import AboutPage from "../pages/AboutPage";
 import getProduct from "../api/productApi";
 import ProductLayout from "../layouts/ProductLayout";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
+import { getCart } from "../utils/cartUtils";
+import { setCart } from "../features/cart/cartSlice";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -22,10 +24,11 @@ const AppRoutes = () => {
     const hydrateUser = () => {
       const user = JSON.parse(localStorage.getItem("loggedInUser"));
       if (user) {
+        const cartData = getCart(user.email);
         dispatch(addUser(user));
+        dispatch(setCart(cartData));
       }
     };
-
     hydrateUser();
     getProduct(dispatch);
   }, [dispatch]);
@@ -88,7 +91,6 @@ const AppRoutes = () => {
   ]);
 
   return <RouterProvider router={router} />;
-
 };
 
 export default AppRoutes;

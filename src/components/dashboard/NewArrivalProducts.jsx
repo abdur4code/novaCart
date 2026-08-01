@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import ProductCard from "../../features/products/ProductCard";
 import { Sparkles } from "lucide-react";
+import { Link } from "react-router";
 
 const NewArrivalProducts = () => {
   const productList = useSelector((state) => state.products.productList);
@@ -19,12 +20,12 @@ const NewArrivalProducts = () => {
             New Arrivals
           </h2>
         </div>
-        <a
-          href="#"
+        <Link
+          to={'/main/product?filter=new-desc'}
           className="text-sm font-semibold text-indigo-400 hover:text-indigo-300"
         >
           Browse new drops →
-        </a>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

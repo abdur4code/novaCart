@@ -3,8 +3,10 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router";
 
 const MainProtected = () => {
-  let { logedUserData } = useSelector((state) => state.auth);
+  let { logedUserData, authChecked } = useSelector((state) => state.auth);
 
+  if (!authChecked) return null;
+  
   if (!logedUserData) {
     return <Navigate to={"/"} />;
   }
