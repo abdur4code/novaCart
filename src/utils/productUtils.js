@@ -8,3 +8,8 @@ export const getOriginalPrice = (discountPercentage, price) => {
         ? (price / (1 - discountPercentage / 100)).toFixed(2)
         : null);
 }
+
+export const getCategoryProdCount = (items, cat) => {
+    const filteredCat = items.filter(prod => prod.category === cat);
+    return (filteredCat.length);
+}

@@ -24,16 +24,10 @@ import {
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { cartCount } from "../utils/cartUtils";
+import ShopByCategory from "../components/dashboard/ShopByCategory";
+import TopRatedProducts from "../components/dashboard/TopRatedProducts";
 
-// MOCK DATA: Categories
-const CATEGORIES = [
-  { id: 1, name: "Electronics", count: "420+ Items", icon: Laptop },
-  { id: 2, name: "Clothing", count: "850+ Items", icon: Shirt },
-  { id: 3, name: "Furniture", count: "190+ Items", icon: Armchair },
-  { id: 4, name: "Home Appliances", count: "310+ Items", icon: HomeIcon },
-  { id: 5, name: "Sports", count: "240+ Items", icon: Dumbbell },
-  { id: 6, name: "Accessories", count: "530+ Items", icon: Watch },
-];
+
 
 // MOCK DATA: Products
 const TOP_RATED = [
@@ -205,70 +199,10 @@ const HomePage = () => {
         </section>
 
         {/* 4. SHOP BY CATEGORY */}
-        <section className="my-16">
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                Shop by Category
-              </h2>
-              <p className="mt-1 text-sm text-slate-400">
-                Select a category card to filter our inventory.
-              </p>
-            </div>
-            <a
-              href="#"
-              className="hidden text-sm font-semibold text-indigo-400 hover:text-indigo-300 sm:block"
-            >
-              View all categories →
-            </a>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-            {CATEGORIES.map((cat) => {
-              const IconComponent = cat.icon;
-              return (
-                <button
-                  key={cat.id}
-                  className="group flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/3 p-6 text-center backdrop-blur-md transition-all hover:-translate-y-1 hover:border-indigo-500/50 hover:bg-white/6 hover:shadow-lg hover:shadow-indigo-500/10"
-                >
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-white/5 text-indigo-400 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
-                    <IconComponent size={24} />
-                  </div>
-                  <span className="font-semibold text-white">{cat.name}</span>
-                  <span className="mt-1 text-xs text-slate-500 group-hover:text-slate-400">
-                    {cat.count}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </section>
+        <ShopByCategory />
 
         {/* 5. TOP-RATED PRODUCTS */}
-        <section className="my-16">
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-indigo-400">
-                <TrendingUp size={14} /> Highest Satisfaction
-              </div>
-              <h2 className="mt-1 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                Top-Rated Products
-              </h2>
-            </div>
-            <a
-              href="#"
-              className="text-sm font-semibold text-indigo-400 hover:text-indigo-300"
-            >
-              Browse top rated →
-            </a>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {TOP_RATED.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </section>
+        <TopRatedProducts />
 
         {/* 6. NEW ARRIVALS */}
         <section className="my-16">

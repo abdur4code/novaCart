@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { ShoppingCart, Heart, Star, Eye, Check, Tag } from "lucide-react";
 import { useNavigate } from "react-router";
 import { getOriginalPrice, getReviewCount } from "../../utils/productUtils";
+import { addToCart } from "../cart/cartSlice";
+import { useDispatch } from "react-redux";
 
 const ProductCard = ({
   // Direct API Props Destructured with Fallbacks
@@ -20,15 +22,21 @@ const ProductCard = ({
   onAddToCart,
   isInCart,
   onToggleWishlist,
+  product,
 }) => {
   const [isWishlisted, setIsWishlisted] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Calculate review count
   const reviewCount = getReviewCount(reviews.length, id);
 
-  // Calculate the original pre-discount price (e.g., $11.16 if price is $9.99 with 10.48% off)
+  // Calculate the original pre-discount price
   const originalPrice = getOriginalPrice(discountPercentage, price)
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(product))
+  }
 
   // Handlers
   const handleWishlist = (e) => {
@@ -151,9 +159,7 @@ const ProductCard = ({
 
           {/* Add to Cart CTA */}
           <button
-            onClick={() =>
-              onAddToCart({ id, title, price, thumbnail, category })
-            }
+            onClick={handleAddToCart}
             disabled={isInCart || stock <= 0}
             className={`flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-xs font-semibold transition-all duration-200 ${
               isInCart

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import ProductList from "../features/products/ProductList";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router";
 
 const SORT_OPTIONS = [
   { label: "Featured", value: "featured" },
@@ -22,9 +23,29 @@ const SORT_OPTIONS = [
 const ProductPage = () => {
   // Filter & Search State
   const productsData = useSelector((state) => state.products.productList);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
+
+  const selectedCategory = searchParams.get("category") || "all";
+
+  const setSelectedCategory = (value) => {
+    if (value === "all") {
+      // remove the param entirely so URL stays clean: /shop
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.delete("category");
+        return next;
+      });
+    } else {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set("category", value);
+        return next;
+      });
+    }
+  };
 
   const CATEGORIES = [
     { label: "All Categories", value: "all" },

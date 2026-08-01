@@ -23,7 +23,7 @@ const ProductList = ({ filteredProducts }) => {
             key={item.id}
             {...item}
             isInCart={cart.some((cartItem) => cartItem.id === item.id)}
-            onAddToCart={(prod) => dispatch(addToCart(prod))}
+            product={item}
             onToggleWishlist={(prod) => console.log("Wishlisted:", prod)}
           />
         ))}
