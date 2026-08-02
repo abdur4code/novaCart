@@ -11,13 +11,11 @@ import {
 const AuthLayout = () => {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 font-sans text-slate-300">
-      {/* Ambient Background Gradients (Positioned to highlight the glass effect) */}
       <div className="absolute left-1/4 top-0 h-125 w-125 rounded-full bg-indigo-600/20 blur-[120px]"></div>
       <div className="absolute bottom-0 right-1/4 h-100 w-100 rounded-full bg-blue-500/20 blur-[100px]"></div>
 
       {/* Main Layout Container */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-16 px-6 py-12 lg:flex-row lg:px-12">
-        {/* LEFT SIDE: Brand & Statistics */}
         <div className="flex w-full flex-col justify-center lg:w-1/2">
           {/* Logo */}
           <div className="mb-9 flex items-center gap-3 text-2xl font-bold text-white">
@@ -37,7 +35,6 @@ const AuthLayout = () => {
               make your wallet happy.
             </p>
 
-            {/* Stat Cards (Also using a subtle glass effect) */}
             <div className="mb-6 grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                 <TrendingUp className="text-indigo-400" size={24} />
@@ -64,7 +61,6 @@ const AuthLayout = () => {
           </div>
         </div>
 
-        {/* RIGHT SIDE: Glassmorphism Form */}
         <Outlet />
       </div>
     </div>

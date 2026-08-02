@@ -10,7 +10,7 @@ export const useAuth = () => {
   const [usersData, setUsersData] = useState(
     JSON.parse(localStorage.getItem("usersData")) || [],
   );
-  // Auth error from reducer using useSelector hook
+  // Auth error from reducer 
   const authError = useSelector((state) => state.auth.error);
 
   //useDispatch hook

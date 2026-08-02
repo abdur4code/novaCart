@@ -7,7 +7,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 
 const ProductCard = ({
-  // Direct API Props Destructured with Fallbacks
   id,
   title = "Untitled Product",
   brand = "Novacart",

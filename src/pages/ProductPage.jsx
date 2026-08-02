@@ -35,7 +35,6 @@ const ProductPage = () => {
 
   const setSelectedCategory = (value) => {
     if (value === "all") {
-      // remove the param entirely so URL stays clean: /shop
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
         next.delete("category");
@@ -52,7 +51,6 @@ const ProductPage = () => {
 
   const setSelectedFilter = (value) => {
     if (value === "featured") {
-      // remove the param entirely so URL stays clean: /shop
       setSearchParams((prev) => {
         const next = new URLSearchParams(prev);
         next.delete("filter");
@@ -171,7 +169,6 @@ const ProductPage = () => {
         {/* FILTER  */}
         {/* ========================================================= */}
         <div className="mb-10 rounded-2xl border border-white/10 bg-white/3 p-4 shadow-2xl backdrop-blur-xl sm:p-6">
-          {/* Top Row: Search Input + Dropdowns + Reset */}
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
             {/* SEARCH INPUT BAR */}
             <div className="relative flex-1">

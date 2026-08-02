@@ -30,7 +30,7 @@ const ProductCardSkeleton = () => {
             <div className="h-3 w-12 rounded bg-white/10" />
           </div>
 
-          {/* Product Title (2 lines) */}
+          {/* Product Title */}
           <div className="mt-2.5 space-y-1.5">
             <div className="h-4 w-full rounded bg-white/15" />
             <div className="h-4 w-2/3 rounded bg-white/10" />
