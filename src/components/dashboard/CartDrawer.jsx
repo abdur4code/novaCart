@@ -1,20 +1,23 @@
-import React, { useState } from 'react';
-import { 
-  ShoppingBag, 
-  X, 
-  Trash2, 
-  Plus, 
-  Minus, 
-  ArrowRight, 
-  Check, 
-  ShoppingCart, 
-  Heart, 
-  Star, 
-  Eye, 
-  Tag 
-} from 'lucide-react';
+import React, { useState } from "react";
+import {
+  ShoppingBag,
+  X,
+  Trash2,
+  Plus,
+  Minus,
+  ArrowRight,
+  Check,
+  ShoppingCart,
+  Heart,
+  Star,
+  Eye,
+  Tag,
+} from "lucide-react";
 
-import { cartCount } from '../../utils/cartUtils';
+import { cartCount } from "../../utils/cartUtils";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { clearCart, toggleCart } from "../../features/cart/cartSlice";
 
 // ============================================================================
 // SLIDECART DRAWER COMPONENT
@@ -27,13 +30,28 @@ const CartDrawer = ({
   onRemoveItem,
   onClearCart,
 }) => {
+  const dispatch = useDispatch();
   // Calculate total price
   const totalAmount = cart.reduce(
     (sum, item) => sum + item.price * item.quantity,
-    0
+    0,
   );
 
   const totalItemsCount = cartCount(cart);
+
+  const handleProceedToCheckout = () => {
+    if (cart.length === 0) {
+      toast.warn("Your cart is empty!");
+      return;
+    } else {
+      toast.success("🎉 Congrats! Your order has been placed successfully!");
+    }
+    // Clear the cart
+    dispatch(clearCart());
+
+    // Close the cart modal/drawer
+    dispatch(toggleCart());
+  };
 
   return (
     <>
@@ -41,14 +59,16 @@ const CartDrawer = ({
       <div
         onClick={onClose}
         className={`fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm transition-opacity duration-300 ${
-          isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          isOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
       />
 
       {/* RIGHT-SIDE DRAWER PANEL */}
       <div
         className={`fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-white/10 bg-slate-950/95 shadow-2xl backdrop-blur-2xl transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
+          isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {/* ========================================================= */}
@@ -61,7 +81,7 @@ const CartDrawer = ({
             </div>
             <h2 className="text-lg font-bold text-white">Your Cart</h2>
             <span className="rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2.5 py-0.5 text-xs font-semibold text-indigo-400">
-              {totalItemsCount} {totalItemsCount === 1 ? 'item' : 'items'}
+              {totalItemsCount} {totalItemsCount === 1 ? "item" : "items"}
             </span>
           </div>
 
@@ -121,7 +141,9 @@ const CartDrawer = ({
                   <div className="flex items-center justify-between border-t border-white/5 pt-3">
                     <div className="flex items-center gap-1 rounded-lg border border-white/10 bg-black/40 p-1">
                       <button
-                        onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                        onClick={() =>
+                          onUpdateQuantity(item.id, item.quantity - 1)
+                        }
                         className="rounded p-1 text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
                       >
                         <Minus size={13} />
@@ -130,7 +152,9 @@ const CartDrawer = ({
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                        onClick={() =>
+                          onUpdateQuantity(item.id, item.quantity + 1)
+                        }
                         className="rounded p-1 text-slate-400 transition-colors hover:bg-white/10 hover:text-white"
                       >
                         <Plus size={13} />
@@ -154,7 +178,8 @@ const CartDrawer = ({
                 Your cart is empty
               </h3>
               <p className="mt-1 max-w-xs text-xs text-slate-400">
-                Explore our catalog and add items to your cart to proceed with checkout.
+                Explore our catalog and add items to your cart to proceed with
+                checkout.
               </p>
             </div>
           )}
@@ -174,9 +199,15 @@ const CartDrawer = ({
             </div>
 
             {/* Proceed to Checkout Button */}
-            <button className="group flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-600/25 transition-all hover:bg-indigo-500 active:scale-[0.98]">
+            <button
+              onClick={handleProceedToCheckout}
+              className="group flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-indigo-600/25 transition-all hover:bg-indigo-500 active:scale-[0.98]"
+            >
               Proceed to Checkout
-              <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              <ArrowRight
+                size={16}
+                className="transition-transform group-hover:translate-x-1"
+              />
             </button>
 
             {/* Clear Cart Button */}
@@ -191,6 +222,6 @@ const CartDrawer = ({
       </div>
     </>
   );
-}
+};
 
 export default CartDrawer;
