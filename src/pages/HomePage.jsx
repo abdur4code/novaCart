@@ -34,6 +34,8 @@ const HomePage = () => {
   const { items } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const cartTotal = cartCount(items);
+  const productsData = useSelector((state) => state.products.productList)
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 font-sans text-slate-300">
       {/* ========================================================= */}
@@ -97,7 +99,7 @@ const HomePage = () => {
               <Package size={24} />
             </div>
             <div>
-              <div className="text-2xl font-bold text-white">2,500+</div>
+              <div className="text-2xl font-bold text-white">{productsData.length}+</div>
               <div className="text-sm text-slate-400">
                 Top Products Available
               </div>
@@ -123,7 +125,7 @@ const HomePage = () => {
               <Layers size={24} />
             </div>
             <div>
-              <div className="text-2xl font-bold text-white">6 Categories</div>
+              <div className="text-2xl font-bold text-white">4 Categories</div>
               <div className="text-sm text-slate-400">Curated & Verified</div>
             </div>
           </div>
